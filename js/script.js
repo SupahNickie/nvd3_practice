@@ -1,62 +1,142 @@
 nv.addGraph(function() {
-    var chart = nv.models.multiBarChart().stacked(true).showControls(true);
+    var chart = nv.models.multiBarChart().stacked(true).showControls(false).showLegend(false)
 
     var chartData = data()
 
     chart.barColor(fetchColors())
+    chart.y(function (d) {
+      return ((d.y / d.total) * 100)
+    })
+    chart.yAxis.tickValues([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    chart.tooltipContent(function(key, y, e, graph) {
+      indexInData = parseInt((y.match(/\d/)[0]) - 1)
+      if (graph.series.key == "Current Things") {
+        applicableObject = data()[0].values[indexInData]
+      } else {
+        applicableObject = data()[1].values[indexInData]
+      }
+      return '<h3>' + key + ': ' + applicableObject.y + '</h3><h5 style="text-align: center">' + Math.round((applicableObject.y / applicableObject.total) * 100) + '% of group population</h5>'
+    })
 
     d3.select('#chart svg')
-        .datum(chartData)
-        .transition().duration(500)
-        .call(chart)
-        ;
+      .datum(chartData)
+      .transition().duration(500)
+      .call(chart)
 
-    nv.utils.windowResize(chart.update);
+    nv.utils.windowResize(chart.update)
 
-    return chart;
+    return chart
 });
 
 function fetchColors() {
-  return ["green", "green", "yellow"]
+  return ["#4e76ab", "#4e76ab", "#8ca762", "#8ca762", "#e5c736", "#e5c736", "#b5854d", "#b5854d"]
+}
+
+function fetchMaxPercent() {
+  var maxPercent = 0
+  var applicableData = data()[0]
+    applicableData.values.map(function(x) {
+      currentPercent = (x.y / x.total)
+      if (currentPercent > maxPercent) {
+        maxPercent = currentPercent
+      }
+    })
+  return Math.round(maxPercent * 100)
 }
 
 function data() {
-  var json = [
+  return [
     {
       "key": "Current Things",
       "values": [
         {
           "x": "Group 1",
-          "y": 33
+          "y": 45,
+          "total": 100
         },
         {
           "x": "Group 2",
-          "y": 15
+          "y": 15,
+          "total": 20
         },
         {
           "x": "Group 3",
-          "y": 12
+          "y": 100,
+          "total": 200
+        },
+        {
+          "x": "Group 4",
+          "y": 19,
+          "total": 20
+        },
+        {
+          "x": "Group 5",
+          "y": 23,
+          "total": 50
+        },
+        {
+          "x": "Group 6",
+          "y": 25,
+          "total": 150
+        },
+        {
+          "x": "Group 7",
+          "y": 93,
+          "total": 100
+        },
+        {
+          "x": "Group 8",
+          "y": 18,
+          "total": 200
         }
       ]
     },
     {
       "key": "# of Maybe Things",
+      "color": "white",
       "values": [
         {
           "x": "Group 1",
-          "y": 0
+          "y": 50,
+          "total": 100
         },
         {
           "x": "Group 2",
-          "y": 4
+          "y": 4,
+          "total": 20
         },
         {
           "x": "Group 3",
-          "y": 6
+          "y": 90,
+          "total": 200
+        },
+        {
+          "x": "Group 4",
+          "y": 0,
+          "total": 20
+        },
+        {
+          "x": "Group 5",
+          "y": 25,
+          "total": 50
+        },
+        {
+          "x": "Group 6",
+          "y": 118,
+          "total": 150
+        },
+        {
+          "x": "Group 7",
+          "y": 2,
+          "total": 100
+        },
+        {
+          "x": "Group 8",
+          "y": 172,
+          "total": 200
         }
       ]
     }
   ]
-  return json;
 }
 
