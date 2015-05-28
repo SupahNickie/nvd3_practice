@@ -31,14 +31,18 @@ nv.addGraph(function() {
 });
 
 var utilities = {
+  createTooltipNode: function(key, obj) {
+    return '<h3>' + key + ': ' + obj.y + '</h3> \
+            <h5 style="text-align: center">' + this.percentilify(obj.y, obj.total) + '% of group population</h5>'
+  },
   fetchColors: function() {
     return ["#4e76ab", "#4e76ab", "#8ca762", "#8ca762", "#e5c736", "#e5c736", "#b5854d", "#b5854d"]
   },
   fetchMaxPercent: function() {
-    maxPercent = 0
-    applicableData = data()[0]
+    var maxPercent = 0
+    var applicableData = data()[0]
     applicableData.values.map(function(x) {
-      currentPercent = this.percentilify(x.y, x.total)
+      var currentPercent = this.percentilify(x.y, x.total)
       if (currentPercent > maxPercent) {
         maxPercent = currentPercent
       }
@@ -46,16 +50,24 @@ var utilities = {
     return maxPercent
   },
   generateTooltip: function(key, y, e, graph) {
-    indexInGroups = parseInt((y.match(/\d/)[0]) - 1)
-    if (graph.series.key == "Current Things") {
-      applicableObject = data()[0].values[indexInGroups]
-    } else {
-      applicableObject = data()[1].values[indexInGroups]
-    }
-    return '<h3>' + key + ': ' + applicableObject.y + '</h3><h5 style="text-align: center">' + this.percentilify(applicableObject.y, applicableObject.total) + '% of group population</h5>'
+    var indexInGroups = parseInt((y.match(/\d/)[0]) - 1)
+    var applicableObject = this.retrieveDataObject(graph.series.key, indexInGroups)
+    return this.createTooltipNode(key, applicableObject)
   },
   percentilify: function(num, denom) {
     return Math.round((num / denom) * 100)
+  },
+  retrieveDataObject: function(key, index) {
+    switch (key) {
+      case "Current Things":
+        return data()[0].values[index]
+        break
+      case "# of Maybe Things":
+        return data()[1].values[index]
+        break
+      default:
+        // Don't use as of yet
+    }
   }
 }
 
