@@ -13,3 +13,7 @@
 .nv-series-1 rect:hover {
   fill-opacity: 0.35;
 }
+
+.nv-series-2 rect:hover {
+  fill-opacity: 1;
+}
