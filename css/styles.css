@@ -1,3 +1,15 @@
 #chart svg {
   height: 400px;
 }
+
+.nv-series-0 rect:hover {
+  fill-opacity: 1;
+}
+
+.nv-series-1 rect{
+  fill-opacity: 0;
+}
+
+.nv-series-1 rect:hover {
+  fill-opacity: 0.35;
+}

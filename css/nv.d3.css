@@ -301,7 +301,8 @@ svg.nvd3-svg {
 .nvd3 .nv-multibar .nv-groups rect,
 .nvd3 .nv-multibarHorizontal .nv-groups rect,
 .nvd3 .nv-discretebar .nv-groups rect {
-  stroke-opacity: 0;
+  /*Overwritten in styles.css*/
+  /*stroke-opacity: 0;*/
 
   transition: fill-opacity 250ms linear;
   -moz-transition: fill-opacity 250ms linear;
@@ -311,7 +312,8 @@ svg.nvd3-svg {
 .nvd3 .nv-multibar .nv-groups rect:hover,
 .nvd3 .nv-multibarHorizontal .nv-groups rect:hover,
 .nvd3 .nv-discretebar .nv-groups rect:hover {
-  fill-opacity: 1;
+  /*Overwritten in styles.css*/
+  /*fill-opacity: 1;*/
 }
 
 .nvd3 .nv-discretebar .nv-groups text,

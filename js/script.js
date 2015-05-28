@@ -3,19 +3,21 @@ nv.addGraph(function() {
 
     var chartData = data()
 
-    chart.barColor(fetchColors())
+    chart.barColor(utilities.fetchColors())
+
     chart.y(function (d) {
-      return ((d.y / d.total) * 100)
+      // Converts y-axis raw values to percent
+      return utilities.percentilify(d.y, d.total)
     })
+
+    chart.yAxis.tickFormat(function(d) {
+      return d + "%"
+    })
+
     chart.yAxis.tickValues([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+
     chart.tooltipContent(function(key, y, e, graph) {
-      indexInData = parseInt((y.match(/\d/)[0]) - 1)
-      if (graph.series.key == "Current Things") {
-        applicableObject = data()[0].values[indexInData]
-      } else {
-        applicableObject = data()[1].values[indexInData]
-      }
-      return '<h3>' + key + ': ' + applicableObject.y + '</h3><h5 style="text-align: center">' + Math.round((applicableObject.y / applicableObject.total) * 100) + '% of group population</h5>'
+      return utilities.generateTooltip(key, y, e, graph)
     })
 
     d3.select('#chart svg')
@@ -28,20 +30,33 @@ nv.addGraph(function() {
     return chart
 });
 
-function fetchColors() {
-  return ["#4e76ab", "#4e76ab", "#8ca762", "#8ca762", "#e5c736", "#e5c736", "#b5854d", "#b5854d"]
-}
-
-function fetchMaxPercent() {
-  var maxPercent = 0
-  var applicableData = data()[0]
+var utilities = {
+  fetchColors: function() {
+    return ["#4e76ab", "#4e76ab", "#8ca762", "#8ca762", "#e5c736", "#e5c736", "#b5854d", "#b5854d"]
+  },
+  fetchMaxPercent: function() {
+    maxPercent = 0
+    applicableData = data()[0]
     applicableData.values.map(function(x) {
-      currentPercent = (x.y / x.total)
+      currentPercent = this.percentilify(x.y, x.total)
       if (currentPercent > maxPercent) {
         maxPercent = currentPercent
       }
     })
-  return Math.round(maxPercent * 100)
+    return maxPercent
+  },
+  generateTooltip: function(key, y, e, graph) {
+    indexInGroups = parseInt((y.match(/\d/)[0]) - 1)
+    if (graph.series.key == "Current Things") {
+      applicableObject = data()[0].values[indexInGroups]
+    } else {
+      applicableObject = data()[1].values[indexInGroups]
+    }
+    return '<h3>' + key + ': ' + applicableObject.y + '</h3><h5 style="text-align: center">' + this.percentilify(applicableObject.y, applicableObject.total) + '% of group population</h5>'
+  },
+  percentilify: function(num, denom) {
+    return Math.round((num / denom) * 100)
+  }
 }
 
 function data() {
