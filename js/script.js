@@ -4,7 +4,7 @@ nv.addGraph(function() {
     // var chartData = gData()
     var chartData = crData()
 
-    var rawData = gData() // chartData mutates because of NVD3 iteration
+    // var rawData = gData() // chartData mutates because of NVD3 iteration
     var rawData = crData()
 
     var chartKeys = chartData.map(function(x) {return x.key})
