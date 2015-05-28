@@ -16,3 +16,9 @@ This includes all 8 groups that we need to worry about as well as the color sche
 This iteration styles up the charts to reflect how the client wants the stacked bars to be handled as well as percentage labeling the y-axis. I changed some of the nvd3 css rules by commenting them out where appropriate and substituting my own in styles.css.
 
 ![alt tag](https://s3.amazonaws.com/portfolio.site.bucket/nvd3_v3)
+
+###V4
+
+We have to support multiple types of charts, so this iteration includes a tri-stack bar chart with reusable JS code for either style. The user has to merely supply a properly formatted JSON object and call the right chart.
+
+![alt tag](https://s3.amazonaws.com/portfolio.site.bucket/nvd3_v4)
