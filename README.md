@@ -22,3 +22,9 @@ This iteration styles up the charts to reflect how the client wants the stacked 
 We have to support multiple types of charts, so this iteration includes a tri-stack bar chart with reusable JS code for either style. The user has to merely supply a properly formatted JSON object and call the right chart.
 
 ![alt tag](https://s3.amazonaws.com/portfolio.site.bucket/nvd3_v4)
+
+###V5
+
+Including repeating names of groups by color bar with additional differentiators on a newline. Also changed the size of the graph and positioned labels manually.
+
+![alt tag](https://s3.amazonaws.com/portfolio.site.bucket/nvd3_v5)
