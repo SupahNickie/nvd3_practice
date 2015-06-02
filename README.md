@@ -28,3 +28,9 @@ We have to support multiple types of charts, so this iteration includes a tri-st
 Including repeating names of groups by color bar with additional differentiators on a newline. Also changed the size of the graph and positioned labels manually.
 
 ![alt tag](https://s3.amazonaws.com/portfolio.site.bucket/nvd3_v5)
+
+###V6
+
+More of a JS refactor to get it ready for the backend than a feature addition, though I did add support for basing percentages off display and an attribute in the data object for absolute values (used in the tooltip)
+
+![alt tag](https://s3.amazonaws.com/portfolio.site.bucket/nvd3_v6)

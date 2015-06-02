@@ -60,7 +60,7 @@ var utilities = {
   },
   createTooltipNode: function(key, obj) {
     return '<h3>' + key + ': ' + obj.y_percent + '%</h3> \
-            <h4 style="text-align: center">Represents ' + obj.y_absolute + ' students</h4>'
+            <h4 style="text-align: center">Represents ' + obj.y_absolute + ' group members</h4>'
   },
   fetchColors: function() {
     return ["#4e76ab", "#4e76ab", "#8ca762", "#8ca762", "#e5c736", "#e5c736", "#b5854d", "#b5854d"]
@@ -85,9 +85,6 @@ var utilities = {
       code++
     }
     return code
-  },
-  percentilify: function(num, denom) {
-    return Math.round((num / denom) * 100)
   },
   retrieveDataObject: function(key, index, data, dataKeys) {
     switch (dataKeys.join(' ')) {
