@@ -30,8 +30,8 @@ var chartInitFunctions = {
     })
   },
   convertYValues: function(chart) {
-    chart.y(function (d) {
-      return utilities.percentilify(d.y, d.total)
+    chart.y(function(d) {
+      return d.y_percent
     })
     chart.yAxis.tickFormat(function(d) {
       return d + "%"
@@ -52,15 +52,15 @@ var chartInitFunctions = {
 var utilities = {
   insertLinebreaks: function (d) {
     var el = d3.select(this)
-    var sections = d.split('\n')
+    var sections = d.split(' - ')
     if (sections.length == 2) {
       el.text(sections[0])
       el.append('tspan').attr('x', 0).attr('dy', '15').text(sections[1])
     }
   },
   createTooltipNode: function(key, obj) {
-    return '<h3>' + key + ': ' + obj.y + '</h3> \
-            <h5 style="text-align: center">' + this.percentilify(obj.y, obj.total) + '% of group population</h5>'
+    return '<h3>' + key + ': ' + obj.y_percent + '%</h3> \
+            <h4 style="text-align: center">Represents ' + obj.y_absolute + ' students</h4>'
   },
   fetchColors: function() {
     return ["#4e76ab", "#4e76ab", "#8ca762", "#8ca762", "#e5c736", "#e5c736", "#b5854d", "#b5854d"]
@@ -72,19 +72,14 @@ var utilities = {
   },
   lookupCode: function(group_code) {
     var code = 0
-    switch (group_code) {
-      case /A Group/.test(group_code):
-        code = 1
-        break
-      case /B Group/.test(group_code):
-        code = 3
-        break
-      case /C Group/.test(group_code):
-        code = 5
-        break
-      case /D Group/.test(group_code):
-        code = 7
-        break
+    if (/A Group/.test(group_code)) {
+      code = 0
+    } else if (/B Group/.test(group_code)) {
+      code = 2
+    } else if (/C Group/.test(group_code)) {
+      code = 4
+    } else if (/D Group/.test(group_code)) {
+      code = 6
     }
     if (/Differentiator Y/.test(group_code)) {
       code++
@@ -138,44 +133,44 @@ function gData() {
       "key": "Current Things",
       "values": [
         {
-          "x": "Group 1",
-          "y": 45,
-          "total": 100
+          "x": "A Group - Differentiator X",
+          "y_percent": 45,
+          "y_absolute": 90
         },
         {
-          "x": "Group 2",
-          "y": 15,
-          "total": 20
+          "x": "A Group - Differentiator Y",
+          "y_percent": 15,
+          "y_absolute": 45
         },
         {
-          "x": "Group 3",
-          "y": 100,
-          "total": 200
+          "x": "B Group - Differentiator X",
+          "y_percent": 70,
+          "y_absolute": 140
         },
         {
-          "x": "Group 4",
-          "y": 19,
-          "total": 20
+          "x": "B Group - Differentiator Y",
+          "y_percent": 20,
+          "y_absolute": 60
         },
         {
-          "x": "Group 5",
-          "y": 23,
-          "total": 50
+          "x": "C Group - Differentiator X",
+          "y_percent": 25,
+          "y_absolute": 50
         },
         {
-          "x": "Group 6",
-          "y": 25,
-          "total": 150
+          "x": "C Group - Differentiator Y",
+          "y_percent": 25,
+          "y_absolute": 75
         },
         {
-          "x": "Group 7",
-          "y": 93,
-          "total": 100
+          "x": "D Group - Differentiator X",
+          "y_percent": 90,
+          "y_absolute": 180
         },
         {
-          "x": "Group 8",
-          "y": 18,
-          "total": 200
+          "x": "D Group - Differentiator Y",
+          "y_percent": 35,
+          "y_absolute": 105
         }
       ]
     },
@@ -183,44 +178,44 @@ function gData() {
       "key": "# of Maybe Things",
       "values": [
         {
-          "x": "Group 1",
-          "y": 50,
-          "total": 100
+          "x": "A Group - Differentiator X",
+          "y_percent": 45,
+          "y_absolute": 90
         },
         {
-          "x": "Group 2",
-          "y": 4,
-          "total": 20
+          "x": "A Group - Differentiator Y",
+          "y_percent": 75,
+          "y_absolute": 225
         },
         {
-          "x": "Group 3",
-          "y": 90,
-          "total": 200
+          "x": "B Group - Differentiator X",
+          "y_percent": 20,
+          "y_absolute": 40
         },
         {
-          "x": "Group 4",
-          "y": 0,
-          "total": 20
+          "x": "B Group - Differentiator Y",
+          "y_percent": 70,
+          "y_absolute": 210
         },
         {
-          "x": "Group 5",
-          "y": 25,
-          "total": 50
+          "x": "C Group - Differentiator X",
+          "y_percent": 65,
+          "y_absolute": 130
         },
         {
-          "x": "Group 6",
-          "y": 118,
-          "total": 150
+          "x": "C Group - Differentiator Y",
+          "y_percent": 65,
+          "y_absolute": 195
         },
         {
-          "x": "Group 7",
-          "y": 2,
-          "total": 100
+          "x": "D Group - Differentiator X",
+          "y_percent": 0,
+          "y_absolute": 0
         },
         {
-          "x": "Group 8",
-          "y": 172,
-          "total": 200
+          "x": "D Group - Differentiator Y",
+          "y_percent": 55,
+          "y_absolute": 165
         }
       ]
     }
@@ -233,44 +228,44 @@ function crData() {
       "key": "Advanced CRs",
       "values": [
         {
-          "x": "A Group\nDifferentiator X",
-          "y": 45,
-          "total": 100
+          "x": "A Group - Differentiator X",
+          "y_percent": 45,
+          "y_absolute": 90
         },
         {
-          "x": "A Group\nDifferentiator Y",
-          "y": 15,
-          "total": 20
+          "x": "A Group - Differentiator Y",
+          "y_percent": 15,
+          "y_absolute": 45
         },
         {
-          "x": "B Group\nDifferentiator X",
-          "y": 100,
-          "total": 200
+          "x": "B Group - Differentiator X",
+          "y_percent": 0,
+          "y_absolute": 0
         },
         {
-          "x": "B Group\nDifferentiator Y",
-          "y": 19,
-          "total": 20
+          "x": "B Group - Differentiator Y",
+          "y_percent": 20,
+          "y_absolute": 60
         },
         {
-          "x": "C Group\nDifferentiator X",
-          "y": 23,
-          "total": 50
+          "x": "C Group - Differentiator X",
+          "y_percent": 70,
+          "y_absolute": 140
         },
         {
-          "x": "C Group\nDifferentiator Y",
-          "y": 25,
-          "total": 150
+          "x": "C Group - Differentiator Y",
+          "y_percent": 50,
+          "y_absolute": 150
         },
         {
-          "x": "D Group\nDifferentiator X",
-          "y": 93,
-          "total": 100
+          "x": "D Group - Differentiator X",
+          "y_percent": 85,
+          "y_absolute": 170
         },
         {
-          "x": "D Group\nDifferentiator Y",
-          "y": 18,
-          "total": 200
+          "x": "D Group - Differentiator Y",
+          "y_percent": 35,
+          "y_absolute": 105
         }
       ]
     },
@@ -278,44 +273,44 @@ function crData() {
       "key": "No CR Data",
       "values": [
         {
-          "x": "A Group\nDifferentiator X",
-          "y": 5,
-          "total": 100
+          "x": "A Group - Differentiator X",
+          "y_percent": 5,
+          "y_absolute": 10
         },
         {
-          "x": "A Group\nDifferentiator Y",
-          "y": 1,
-          "total": 20
+          "x": "A Group - Differentiator Y",
+          "y_percent": 15,
+          "y_absolute": 45
         },
         {
-          "x": "B Group\nDifferentiator X",
-          "y": 10,
-          "total": 200
+          "x": "B Group - Differentiator X",
+          "y_percent": 10,
+          "y_absolute": 20
         },
         {
-          "x": "B Group\nDifferentiator Y",
-          "y": 0,
-          "total": 20
+          "x": "B Group - Differentiator Y",
+          "y_percent": 20,
+          "y_absolute": 60
         },
         {
-          "x": "C Group\nDifferentiator X",
-          "y": 2,
-          "total": 50
+          "x": "C Group - Differentiator X",
+          "y_percent": 5,
+          "y_absolute": 10
         },
         {
-          "x": "C Group\nDifferentiator Y",
-          "y": 27,
-          "total": 150
+          "x": "C Group - Differentiator Y",
+          "y_percent": 25,
+          "y_absolute": 75
         },
         {
-          "x": "D Group\nDifferentiator X",
-          "y": 5,
-          "total": 100
+          "x": "D Group - Differentiator X",
+          "y_percent": 5,
+          "y_absolute": 10
         },
         {
-          "x": "D Group\nDifferentiator Y",
-          "y": 182,
-          "total": 200
+          "x": "D Group - Differentiator Y",
+          "y_percent": 25,
+          "y_absolute": 75
         }
       ]
     },
@@ -323,44 +318,44 @@ function crData() {
       "key": "Non-Advanced CRs",
       "values": [
         {
-          "x": "A Group\nDifferentiator X",
-          "y": 50,
-          "total": 100
+          "x": "A Group - Differentiator X",
+          "y_percent": 50,
+          "y_absolute": 100
         },
         {
-          "x": "A Group\nDifferentiator Y",
-          "y": 4,
-          "total": 20
+          "x": "A Group - Differentiator Y",
+          "y_percent": 70,
+          "y_absolute": 210
         },
         {
-          "x": "B Group\nDifferentiator X",
-          "y": 90,
-          "total": 200
+          "x": "B Group - Differentiator X",
+          "y_percent": 90,
+          "y_absolute": 180
         },
         {
-          "x": "B Group\nDifferentiator Y",
-          "y": 1,
-          "total": 20
+          "x": "B Group - Differentiator Y",
+          "y_percent": 60,
+          "y_absolute": 180
         },
         {
-          "x": "C Group\nDifferentiator X",
-          "y": 25,
-          "total": 50
+          "x": "C Group - Differentiator X",
+          "y_percent": 25,
+          "y_absolute": 50
         },
         {
-          "x": "C Group\nDifferentiator Y",
-          "y": 98,
-          "total": 150
+          "x": "C Group - Differentiator Y",
+          "y_percent": 25,
+          "y_absolute": 75
         },
         {
-          "x": "D Group\nDifferentiator X",
-          "y": 2,
-          "total": 100
+          "x": "D Group - Differentiator X",
+          "y_percent": 10,
+          "y_absolute": 20
         },
         {
-          "x": "D Group\nDifferentiator Y",
-          "y": 0,
-          "total": 200
+          "x": "D Group - Differentiator Y",
+          "y_percent": 40,
+          "y_absolute": 120
         }
       ]
     }
